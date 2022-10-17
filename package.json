@@ -1,0 +1,18 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Juan Pinol's portfolio site",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "portfolio"
+  ],
+  "author": "Juan Pinol",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0",
+    "webpack": "^5.74.0"
+  }
+}
