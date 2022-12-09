@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +14,16 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { amber, grey, deepOrange } from '@mui/material/colors';
+
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link as RouterLink
+} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -26,40 +38,85 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+//function that takes in a mode and returns an config object based on mode input
+const getDesignTokens = (mode) => ({
+  palette: {
+    mode,
+    ...(mode === 'light'
+      ? {
+          // palette values for light mode
+          primary: amber,
+          divider: amber[200],
+          text: {
+            primary: grey[900],
+            secondary: grey[800],
+          },
+        }
+        //if mode doesn't equal 'light' uses next config
+      : {
+          // palette values for dark mode
+          primary: deepOrange,
+          divider: deepOrange[700],
+          background: {
+            default: '#121212',
+            paper: deepOrange[900],
+          },
+          text: {
+            primary: '#fff',
+            secondary: grey[500],
+          },
+        }),
+  },
+});
 
-export const  App = () => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+export default function App () {
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [mode, setMode] = React.useState(prefersDarkMode ? 'dark' : 'light');
+
+  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) =>
+        prevMode === 'light' ? 'dark' : 'light',
+        );
+      },
+    }),
+    [],
+  )
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1445525994741-05c3738e5a89?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8)',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: (t) =>
-              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
-            backgroundPosition: 'right',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <div id="sidebar">
+            <div>
+              <h1>Juan Pinol</h1>
+            </div>
+            <a>
+              <button onClick={(() => colorMode.toggleColorMode())}>
+                  Change light/dark mode!
+              </button>
+            </a>
+            <RouterLink to="/">
+              <button>Home</button>
+            </RouterLink>
+            <RouterLink to="/miata">
+              <button>Miata</button>
+            </RouterLink>
+            <RouterLink to="/aboutme">
+              <button>About Me</button>
+            </RouterLink>
+            <RouterLink to="/errortest">
+              <button>Error Tester</button>
+            </RouterLink>
+          </div>
+            <div>
+              <Outlet />
               <Copyright sx={{ mt: 5 }} />
-        </Grid>
-      </Grid>
+            </div>
+
     </ThemeProvider>
   );
 }
+
