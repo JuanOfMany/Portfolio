@@ -17,11 +17,9 @@ export default function ErrorPage() {
       <p>
         <i>{error.statusText || error.mmessage}</i>
       </p>
-
       <RouterLink to="/">
-              <button>Home</button>
-            </RouterLink>
-
+        <button>Home</button>
+      </RouterLink>
     </div>
   );
 }
