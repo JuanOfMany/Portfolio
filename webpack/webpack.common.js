@@ -25,7 +25,19 @@ module.exports = {
         {
           test: /\.(jpg|jpe?g|png|gif|svg)$/i,
           loader: 'file-loader',
-      }
+      },
+      {
+        test: /\.(glb|gltf)$/,
+        use: [
+        {
+        loader: 'file-loader',
+        options: {
+          outputPath: '/',
+          sourceMap: true
+         }
+        }
+        ]
+        },
     ],
   },
   output: {
