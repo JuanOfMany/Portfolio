@@ -5,6 +5,8 @@ import App from './App';
 import ErrorPage from './components/error-page.jsx';
 import Miata from './components/Miata.jsx';
 import AboutMe from './components/AboutMe.jsx';
+import TechStack from './components/TechStack.jsx';
+import Cats from './components/Cats.jsx';
 
 import {
   createBrowserRouter,
@@ -26,13 +28,17 @@ const router = createBrowserRouter([
       {
         path: "/aboutme",
         element: <AboutMe />,
+      },
+      {
+        path: "/techstack",
+        element: <TechStack />,
+      },
+      {
+        path: "/Cats",
+        element: <Cats />,
       }
     ],
   },
-  // {
-  //   path: "/miata",
-  //   element: <Miata />
-  // }
 ]);
 
 const container = document.getElementById('root');

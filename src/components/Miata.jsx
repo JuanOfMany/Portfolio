@@ -8,9 +8,9 @@ export default function Miata () {
 
   useEffect(() => {
 
+    let mixer;
     const loader = new GLTFLoader();
     loader.load('./assets/miata.glb', function(gltf) {
-
       gltf.scene.scale.multiplyScalar(1 / 80);
 
       gltf.scene.position.x = -1.5; // once rescaled, position the model where needed
@@ -18,14 +18,20 @@ export default function Miata () {
       gltf.scene.position.y = -0.75;
 
       scene.add(gltf.scene);
-      gltf.animations; // Array<THREE.AnimationClip>
-      gltf.scene; // THREE.Group
-      gltf.scenes; // Array<THREE.Group>
-      gltf.cameras; // Array<THREE.Camera>
-      gltf.asset; // Object
+      mixer = new THREE.AnimationMixer(gltf.scene)
+      const clips = gltf.animations;
+      const clip = THREE.AnimationClip.findByName(clips, 'Scene');
+      const action = mixer.clipAction(clip);
+      console.log(action)
+      action.play();
+      // gltf.animations; // Array<THREE.AnimationClip>
+      // gltf.scene; // THREE.Group
+      // gltf.scenes; // Array<THREE.Group>
+      // gltf.cameras; // Array<THREE.Camera>
+      // gltf.asset; // Object
     }, function ( xhr ) {
 
-      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+      // console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
     }, function(error) {
       console.error('this is an error:',error);
     });
@@ -38,74 +44,42 @@ export default function Miata () {
     const moreLight = new THREE.PointLight( 0xffffff, 2.5, 10 );
     moreLight.position.set( -1, 3, 2 );
     scene.add( moreLight );
-    // scene.add(new THREE.AxesHelper(5))
+    // scene.add(new THREE.AxesHelper(25))
+
+    const directionalLight = new THREE.DirectionalLight( 0xffffff);
+    directionalLight.position.set(0, 0, 2);
+scene.add( directionalLight );
 
     var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
     camera.position.set(1,1,2.5); // Set position like this
     camera.lookAt(new THREE.Vector3(0,0,0)); // Set look at coordinate like this
+    camera.position.z = 3;
 
     var renderer = new THREE.WebGLRenderer({alpha:true});
-    renderer.setSize( window.innerWidth-100, window.innerHeight-100 );
+    renderer.setSize( window.innerWidth-200, window.innerHeight-200 );
+
     mountRef.current.appendChild( renderer.domElement );
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.enableDamping = true
 
-    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-    var cube = new THREE.Mesh( geometry, material );
-    // scene.add( cube );
-    camera.position.z = 3;
+    const clock = new THREE.Clock();
+
     var animate = function () {
       requestAnimationFrame( animate );
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      if(mixer) {
+        mixer.update(clock.getDelta());
+    }
+
       renderer.render( scene, camera );
     };
-
-
-
-
     animate();
-
-
-    // var scene = new THREE.Scene();
-    // scene.add(new THREE.GridHelper(8,12,0x888888, 0x444444));
-
-    // const loader = new GLTFLoader();
-    // loader.load('./assets/miata/scene.gltf', function(gltf) {
-    //   scene.add(gltf.scene);
-    // }, undefined, function(error) {
-    //   console.error('this is an error:',error);
-    // });
-
-    // var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-    // var renderer = new THREE.WebGLRenderer({alpha:true});
-    // renderer.setSize( window.innerWidth, window.innerHeight );
-    // mountRef.current.appendChild( renderer.domElement );
-
-    // var animate = function () {
-    //   requestAnimationFrame( animate );
-    //   renderer.render( scene, camera );
-    // };
-
-    // let onWindowResize = function () {
-    //   camera.aspect = window.innerWidth / window.innerHeight;
-    //   camera.updateProjectionMatrix();
-    //   renderer.setSize( window.innerWidth, window.innerHeight );
-    // }
-
-    // window.addEventListener('resize', onWindowResize, false);
-
-    // animate();
-
   },[]);
 
   return (
     <div>
       <h1>Miata</h1>
-      <div ref={mountRef} id='Miata'>
+      <div ref={mountRef} id='miata'>
         Miata goes here!
       </div>
     </div>

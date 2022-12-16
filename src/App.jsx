@@ -1,4 +1,6 @@
 import * as React from 'react';
+import CatFact from './components/CatFact.jsx'
+import SideBar from './components/SideBar.jsx'
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Avatar from '@mui/material/Avatar';
@@ -89,30 +91,14 @@ export default function App () {
   return (
     <ThemeProvider theme={theme}>
         <CssBaseline />
-          <div id="sidebar">
+        <a>
+      <button onClick={(() => colorMode.toggleColorMode())}>
+          Change light/dark mode!
+      </button>
+    </a>
+          <SideBar />
             <div>
-              <h1>Juan Pinol</h1>
-            </div>
-            <a>
-              <button onClick={(() => colorMode.toggleColorMode())}>
-                  Change light/dark mode!
-              </button>
-            </a>
-            <RouterLink to="/">
-              <button>Home</button>
-            </RouterLink>
-            <RouterLink to="/miata">
-              <button>Miata</button>
-            </RouterLink>
-            <RouterLink to="/aboutme">
-              <button>About Me</button>
-            </RouterLink>
-            <RouterLink to="/errortest">
-              <button>Error Tester</button>
-            </RouterLink>
-          </div>
-            <div>
-              <Outlet />
+              <Outlet id="container"/>
               <Copyright sx={{ mt: 5 }} />
             </div>
 
