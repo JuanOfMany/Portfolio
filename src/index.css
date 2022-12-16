@@ -24,6 +24,14 @@ code {
   align-content:center;
 }
 
+.flex-grid {
+  display: flex;
+}
+
+.col {
+  flex: 3;
+}
+
 canvas {
   /* width: 75% */
   /* height: 100%; */
