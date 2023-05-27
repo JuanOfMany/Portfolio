@@ -39,9 +39,22 @@ canvas {
   display:inline;
 }
 
+.carousel {
+  display:flex;
+  width: 500vw;
+  overflow-x:hidden;
+  justify-content: space-around;
+}
+
 .projectContainer {
+  transition: transform 1s;
   text-align: center;
-  height:50vh;
+  height:20vh;
+  border-color: #121212;
+  border-width: 5px;
+  border-style: dotted;
+  display: inline-block;
+  width:80vw;
 }
 
 .fixed-top {

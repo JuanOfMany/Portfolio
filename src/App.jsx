@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useMemo, useRef} from 'react'
-import Container from './components/Container.jsx'
+import React, { useEffect, useState, useMemo, useRef } from 'react'
 import Miata from './components/Miata.jsx'
 import ProgressBar from './components/ProgressBar.jsx'
+import Carousel from './components/Carousel.jsx'
 
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Avatar from '@mui/material/Avatar'
@@ -18,8 +18,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { amber, grey, deepOrange } from '@mui/material/colors'
-
-
 
 function Copyright(props) {
   return (
@@ -85,49 +83,45 @@ export default function App() {
     []
   )
 
-  const appContainer = useRef(null);
-  let maxHeight = null;
+  const appContainer = useRef(null)
+  let maxHeight = null
 
+  const handleScroll = () => {
+    var position = window.pageYOffset
+    setScrollPercent(
+      Math.round((position / (maxHeight - window.innerHeight)) * 100)
+    )
+  }
 
-const handleScroll = () => {
-    var position = window.pageYOffset;
-    setScrollPercent(Math.round(position /(maxHeight - window.innerHeight) * 100))
-};
+  const [scrollPercent, setScrollPercent] = useState(0)
 
-const [scrollPercent, setScrollPercent] = useState(0);
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
-useEffect(() => {
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    maxHeight = appContainer.current.clientHeight;
+    maxHeight = appContainer.current.clientHeight
     return () => {
-        window.removeEventListener('scroll', handleScroll);
-    };
-}, []);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div id="container" ref={appContainer}>
-        <ProgressBar />
+        <ProgressBar width={scrollPercent} />
         <div
           id="button-container"
-          style={{ display:"flex", justifyContent: "space-around" }}
+          style={{ display: 'flex', justifyContent: 'space-around' }}
         >
           <Miata />
 
           <button onClick={() => colorMode.toggleColorMode()}>
             Change light/dark mode!
           </button>
-
         </div>
-        <ProgressBar width={scrollPercent}/>
-        <Container />
-        <Container />
+        <Carousel />
         <Copyright sx={{ mt: 5 }} />
       </div>
-
     </ThemeProvider>
   )
 }
