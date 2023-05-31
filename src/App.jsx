@@ -113,7 +113,7 @@ export default function App() {
           id="button-container"
           style={{ display: 'flex', justifyContent: 'space-around' }}
         >
-          <Miata />
+          {/* <Miata /> */}
 
           <button onClick={() => colorMode.toggleColorMode()}>
             Change light/dark mode!
